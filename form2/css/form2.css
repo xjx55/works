@@ -1,0 +1,22 @@
+body {
+    background-color: pink;
+    font-family: 'Microsoft yahei';
+}
+div {
+    margin-bottom: 5px;
+}
+input {
+    border-radius: 5px;
+}
+textarea {
+    border-radius: 5px;
+}
+.areainput {
+    background-color: pink;
+    border: none;
+    width: 18px;
+    font-size: 16px;
+}
+form {
+    margin-left: 15px;
+}

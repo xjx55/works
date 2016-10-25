@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: pink;
+        }
+        div {
+            margin-bottom: 5px;
+        }
+        input {
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <form action="../api/reg_login_enter.php" method="post">
+        <div>
+            <label>账号: <input type="text" name="username"></label>
+        </div>  
+        <div>
+            <label>密码: <input type="password" name="password"></label>
+        </div> 
+        <div>
+            <label>验证码: <input type="text" name="vcode"></label>
+            <img src="../vcode/captcha.php"title="点击刷新" align="absbottom" onclick="this.src='../vcode/captcha.php?'+Math.random();">
+        </div> 
+        <div>
+            <input type="submit" value="提交">
+            <input type="reset" value="清空">
+            <input id="back" type="button" value="返回">
+        </div>     
+    </form>
+    <script src="../bower/js/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        $('#back').on('click',function() {
+            location.href = '../form2/main2.html';
+        });
+    </script>
+</body>
+</html>

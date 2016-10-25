@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul,li {
+            list-style: none;
+        }
+        .tab {
+            margin: 50px auto;
+            width: 360px;
+        }
+        .tab > ul > li{
+            float: left;
+            height: 30px;
+            width: 60px;
+            line-height: 30px;
+            text-align: center;
+            background-color: #ccc;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .tab > ul > li.on {
+            background-color: red;
+            color: #fff;
+        }
+        .clear {
+            clear: both;
+        }
+        .tab > div {
+            width: 360px;
+            border: 1px solid red; 
+            height: 200px;
+            overflow: hidden;
+        }
+        .tab > div > div {
+            width: 360px;
+            height: 200px;
+        }
+        .tab2 > ul > li {
+            background-color: pink;
+        }
+        .tab2 > ul > li.on {
+            background-color: #ccc;
+            color: #fff;
+        }
+        .tab2 > div {
+            border: 1px solid pink;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab">
+        <ul>
+            <li class="on">item1</li>
+            <li>item2</li>
+            <li>item3</li>
+            <li>item4</li>
+            <li>item5</li>
+            <div class="clear"></div>
+        </ul>
+        <div>
+            <div>content1</div>
+            <div>content2</div>
+            <div>content3</div>
+            <div>content4</div>
+            <div>content5</div>
+        </div>
+    </div>
+    <hr>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <hr>
+    <div class="tab tab2 mover">
+        <ul>
+            <li class="on">item1</li>
+            <li>item2</li>
+            <li>item3</li>
+            <div class="clear"></div>
+        </ul>
+        <div>
+            <div>content1</div>
+            <div>content2</div>
+            <div>content3</div>
+        </div>
+    </div>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script>
+        !function(window,document,$,undefined) {
+            function renderTabByClass(className) {
+                var $target = $(className);
+                $target.each(function(i,obj) {  //页面有多个tab时用
+                    var $obj = $(obj),
+                        $lis = $obj.find('ul > li'),
+                        $divs = $obj.find('div > div'),
+                        evt,
+                        isMouseover = false,
+                        timer;
+                    if($obj.hasClass('mover')) {
+                        evt = 'mouseover';
+                        isMouseover = true;
+                    } else {
+                        evt = 'click';
+                    };
+                    $lis.on(evt,function() {
+                    var $this = $(this),
+                        index = $this.index();
+                    /*$this.addClass('on').siblings('.on').removeClass('on');
+                    $divs.eq(index).show().siblings().hide();*/
+                    if(isMouseover) {  //延时优化的tab
+                        timer = setTimeout(function() {
+                            $this.addClass('on').siblings('.on').removeClass('on');
+                            $divs.eq(index).show().siblings().hide();    
+                        },300);
+
+                        $lis.on('mouseout',function() {
+                            if(timer) {
+                                clearTimeout(timer);
+                            }
+                        });
+                    } else {
+                        $this.addClass('on').siblings('.on').removeClass('on');
+                        $divs.eq(index).show().siblings().hide();
+                    };
+                });
+                });
+                   /* $lis = $target.find('ul > li'), //页面只有一个tab时用
+                    $divs = $target.find('div > div');*/
+               /* $lis.on('click',function() {
+                    var $this = $(this),
+                        index = $this.index();
+                    $this.addClass('on').siblings('.on').removeClass('on');
+                    $divs.eq(index).show().siblings().hide();
+                });*/
+            };
+            renderTabByClass('.tab');
+        }(window,document,jQuery);
+    </script>
+</body>
+</html>
