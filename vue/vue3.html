@@ -1,0 +1,32 @@
+ <!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app1">
+        <input v-model="message" placeholder="edit me">
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+        <p>Message is :{{message}}</p>
+
+        <hr>
+
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{checked}}</label>
+    </div>
+  
+
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var app1=new Vue({
+            el:'#app1',
+            data:{
+                message:'',
+                checked:true
+            }
+        });
+    </script>    
+</body>
+</html>

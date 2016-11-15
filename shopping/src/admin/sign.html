@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="reg-form">
+        <div>
+            <label>
+                用户名：<input type="text" name="username" id="uname">
+            </label>   
+        </div>
+        <div>
+            <label>
+                密码：<input type="password" name="password" id="pword">
+            </label> 
+        </div>
+        <div>
+            <label>
+                邮箱：<input type="text" name="email" id="email">
+            </label>
+        </div>
+        <div>
+            <label>
+                手机：<input type="text" name="mobile" id="mobile">
+            </label> 
+        </div>
+        <div>
+            <input type="submit" value="注册" id="signBtn">
+            <a href="../index.php">返回</a>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+    <script src="../../../bower/js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="../../../bower/js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        !function(window,document,$,undefined) {
+            var init = function() {
+                $('#signBtn').on('click',onsignBtnClick);
+            };
+
+            var onsignBtnClick = function() {
+                var data = {
+                        username : $('#uname').val(),
+                        password : $('#pword').val(),
+                        email : $('#email').val(),
+                        mobile : $('#mobile').val()
+                    }; 
+
+                var url = '../../../api/shopping_user_add.php';
+                //表单验证
+                
+                $.get(url,data,function(response) {
+                    if(response.success) {
+                        alert('注册成功，请返回首页登录')
+                       location.href = "../index.php";
+                    } else {
+                        alert('登录失败，请重试！')
+                    }
+                },'json');
+                
+            };
+
+            $(document).ready(init);
+        }(window,document,jQuery); 
+    </script>
+
+</body>
+</html>

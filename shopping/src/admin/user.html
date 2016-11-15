@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-cn"> 
+  <head> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>XJX电商-用户管理</title>
+    <link href="../../../bower/js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/shopping.css">
+  </head>
+  <body ng-app="usersApp" ng-controller="usersController">
+  <!-- 顶部导航条 -->
+    <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">XJX后台管理</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="index.html">商品管理</a></li>
+          <li><a href="classify.html">类别管理</a></li>
+          <li class="active"><a href="user.html">用户管理</a></li>
+          <li><a href="classify.html">订单管理</a></li>
+          
+          <!-- <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+              <li class="divider"></li>
+              <li><a href="#">One more separated link</a></li>
+            </ul> 
+          </li> -->
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Link</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <!-- 页面主体 -->
+  <div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="btn-group">
+        <button type="button" id="disBtn" class="btn btn-success" ng-class="{true:'btn-success',false:'btn-default'}[paging.status==1]" ng-click="showUsers()">用户列表</button>
+        <button id="delBtn" type="button"  ng-click="showDisUsers()" class="btn" ng-class="{false:'btn-success',true:'btn-default'}[paging.status==1]">用户回收站</button>
+      </div> 
+      <div class="btn-group">
+        <button  ng-show="paging.status==1" type="button" ng-click="onDelBtnClick()" ng-disabled="params.ids.length==0" class="btn btn-link">删除用户</button>
+        <button  ng-show="paging.status==0" type="button" ng-click="onResuBtnClick()" ng-disabled="params.ids.length==0" class="btn btn-link">恢复</button>
+        <button  ng-show="paging.status==0" type="button" ng-click="BtnClick()" ng-disabled="params.ids.length==0" class="btn btn-link">彻底删除</button>
+      </div>  
+    </div>
+    <div class="col-md-3 col-md-offset-3">
+      <div class="input-group">
+        <input type="text" class="form-control" id="findIpt">
+        <span class="input-group-btn">
+          <button class="btn btn-default" id="findBtn" type="button">查询</button>
+        </span>
+      </div><!-- /input-group -->
+    </div>
+  </div>
+   
+
+    <table id="classifyTable" class="table table-bordered table-striped table-hover mt-20 mb-0">
+     
+        <tr>
+          <th class="w-30"><input ng-model="allChkd" type="checkbox" id="all" ng-checked="params.ids.length==paging.size"></th> 
+          <th class="w-50">序号</th>
+          <th class="">用户名</th>
+          <th class="">邮箱</th>
+          <th class="">电话</th>
+        </tr> 
+        <tr ng-repeat="user in userList">
+          <td class="w-30"><input ng-checked="allChkd" type="checkbox" id="all" ng-click="onChkboxClick($event)"></td> 
+          <td class="w-50">{{$index + 1 + paging.baseNum}}</td>
+          <td class="">{{user.username}}</td>
+          <td class="">{{user.email}}</td>
+          <td class="">{{user.mobile}}</td>
+        </tr>   
+     
+      
+    </table>
+
+    <!-- 分页  -->
+    <nav>
+      <ul class="pagination pull-right">
+        <li><a href="#" ng-click="prevClick()">&laquo;</a></li>
+        <li ng-click="onPagingLiClick()" ng-class="{true:'active'}[$index==paging.page]" ng-repeat="page in pageArr"><a href="javascript:;">{{page + 1}}</a></li>
+        <!-- <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li> -->
+        <li><a href="#" ng-click="nextClick()">&raquo;</a></li> 
+      </ul>
+    </nav>
+
+  </div>
+  <!-- 添加商品弹出框 -->
+  <div class="modal fade" id="myClassify">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalTitle">新增类名</h4>
+        </div>
+        <div class="modal-body">
+        <!-- 弹出框内容 -->
+          <form class="form-horizontal" role="form" id="formClose">
+            <input type="hidden" id="gid">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" >类别名称</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" placeholder="请输入新增类名">
+              </div>
+            </div>
+          </form>
+     
+         <!--  ----   -->  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" id="saveBtn" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+
+
+
+    <script src="../../../bower/js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="../../../bower/js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../../bower/js/lib/layer/build/layer.js"></script>
+    <script src="../../../angular/js/lib/angular/angular.min.js"></script>
+    <script src="../../../bower/js/lib/layer/build/layer.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/user.js"></script>
+    
+  </body>
+</html>

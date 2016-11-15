@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        div {
+            background-color: #ccc;
+        }
+        div.active {
+            background-color:red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-html="message">
+        {{message}}
+    </div>
+
+    <hr>
+
+    <div id="app2">
+        <span v-bind:title="message">
+            Hello xjx~
+        </span>
+    </div>
+
+    <hr>
+
+    <div id="app3">
+        <p v-if="seen">Now you can see me</p>
+    </div>
+    
+    <hr>
+        v-for指令可以绑定数据到数据来渲染一个列表：
+    <div id="app4">
+        <ul>
+            <li v-for="todo in todos">
+                {{todo.text}} 
+
+            </li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <div id="app5">
+        <p>{{message}}</p>
+        <button v-on:click="mybtn">mybtn</button>
+    </div>
+
+    <hr>
+
+    <div class="app6">
+        <p>{{message}}</p>
+        <input v-model="message">
+    </div>
+
+    <hr>
+
+    <div id="app7">
+        <input type="checkbox" v-on:click="chkclk">
+        <button v-bind:disabled="getDisable">my btn</button>
+    </div>
+
+    <hr>
+
+    <div id="app8">
+        <p>Original message:"{{message}}"</p>
+        <p>Computed reversed message:"{{reverseMessage}}"</p>
+        <p>Reversed message: "{{ reverseMessage2() }}"</p>
+        <button v-on:click="onClk"></button>
+    </div>
+
+    <hr>
+
+    <div id="app9">{{fullName}}</div>
+
+    <hr>
+
+    <div id="app10">
+        <p>
+            Ask a yes/no question
+            <input v-model="question">
+        </p>
+        <p>{{answer}}</p>
+    </div>
+
+    <div id="app11">
+        <div v-bind:class="{active:isActive}">abc</div>
+    </div>
+    
+
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var app = new Vue({
+            el:'#app11',
+            data:{
+                isActive:false
+            }
+        });
+       /* var app = new Vue({
+            el:'#app10',
+            data:{
+                question:'',
+                answer:'I cannot give you an answer until you ask a question'
+            },
+            watch:{
+                question:function(newQuestion){
+                    this.answer = 'Waiting for you to stop typing...'
+                    this.getAnswer()
+                }
+            },
+            methods:{
+                getAnswer:_.debounce(
+                    function(){
+                        var vm = this
+                        if(this.question.indexOf('?')===-1){
+                            vm.answer = 'Question usually contain a question mark.;-)'
+                            return
+                        }
+                        vm.answer = 'Thinking...'
+                        axios.get('https://yesno.wtf/api')
+                            .then(function(response){
+                                vm.answer = _.capitalize(response.data.answer)
+                            })
+                            .catch(function(error){
+                                vm.answer = 'Error! Could not reach the API' + error
+                            })
+                    },
+                    500
+                    )
+            }
+        });*/
+
+        var app = new Vue({
+            el:'#app9',
+            data:{
+                firstName:'Joesss',
+                lastName:'Jindf'
+            },
+            computed:{
+                fullName:{
+                    get:function(){
+                        return this.firstName + " " + this.lastName
+                    },
+                    set:function(){
+                        var names = newValue.aplit(' ')
+                        this.firstName = names[0]
+                        this.lastName = names[names.length - 1]
+
+                    }
+                }
+            }
+            
+        });
+
+        var app = new Vue({
+            el:'#app8',
+            data:{
+                message:'Hellow'
+            },
+            computed:{
+                reverseMessage:function(){
+                    return this.message.split('').reverse().join('') + Date.now()
+                   
+                }
+            },
+            methods: {
+                reverseMessage2: function () {
+                    return this.message.split('').reverse().join('') + Date.now()
+                    
+                },
+                onClk:function() {
+                    console.log(this.reverseMessage);
+                    console.log(this.reverseMessage2());
+                }
+            }
+           
+        });
+
+        var app = new Vue({
+            el:'#app7',
+            data:{
+                getDisable:true  //为true时按钮不可用
+            },
+            methods:{
+                chkclk:function(evt) {
+                    //console.log(arguments);得到mouseevent事件里的target属性.
+                    var chk = evt.target;
+                    if(chk.checked) {
+                        this.getDisable = false;
+                    }else{
+                        this.getDisable = true;
+                    }
+                }
+            }
+        });
+
+    //////////////////////////////
+        var app = new Vue({
+            el:'#app',
+            data:{
+                message:'<h1>Hello World</h1>'
+            }
+        });
+
+        ////////////////////////
+        var app = new Vue({
+            el:'#app2',
+            data:{
+                message:'you see ' + new Date()
+            }
+        });
+
+        ///////////////////////
+        var app = new Vue({
+            el:'#app3',
+            data:{
+                seen:true//false为不可见
+            }
+        });
+
+        /////////////////////
+        var app = new Vue({
+            el:'#app4',
+            data:{
+                todos: [
+                  { text: 'Learn JavaScript' },
+                  { text: 'Learn Vue' },
+                  { text: 'Build something awesome' }
+                ]
+            }
+        });
+
+        //////////////////////
+        var app = new Vue({
+            el:'#app5',
+            data:{
+                message:'hello world'
+            },
+            methods:{
+                mybtn:function() {
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        });
+
+        ////////////////////////
+        var app = new Vue({
+            el:'.app6',
+            data:{
+                message:'hello'
+            }
+        });
+    </script>    
+</body>
+</html>

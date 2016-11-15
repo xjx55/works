@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body ng-app="wbcMngApp">
+
+    <div class="nav">
+        <a href="#/">首页</a>
+        <a href="#/users">用户管理</a>
+        <a href="#/asset">资产管理</a>
+    </div>
+
+    <hr>
+
+    <div ng-view></div>  <!-- 使用ng-view指令，改div内容会根据路由的变化变化 -->
+    <script src="../bower/js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="../bower/js/lib/angular/angular.min.js"></script> 
+    <script src="../bower/js/lib/angular/angular-route.min.js"></script> 
+    <script>
+
+        var wbcMngApp = angular.module('wbcMngApp',['ngRoute'])
+            .config(['$routeProvider',function($routeProvider) { 
+                $routeProvider
+                    .when('/',{templateUrl:'views/index.html',controller:'indexController'})
+                    .when('/users',{templateUrl:'views/user.html',controller:'userController'})
+                    .when('/asset',{templateUrl:'views/asset.html',controller:'assetController'})
+                    .otherwise({redirectTo:'/'}); 
+            }]);
+
+            wbcMngApp.controller('indexController',function() {
+                console.log('index');
+            });
+
+            wbcMngApp.controller('userController',function() {
+                console.log('user');
+            });
+
+            wbcMngApp.controller('assetController',function() {
+                console.log('asset');
+            });
+
+////////////////////////////////////////////////////////////
+        /*angular.module('wbcMngApp',['ngRoute']) //包含了ngRoute模块作为主应用模块的依赖模块
+            .config(['$routeProvider',function($routeProvider//依赖注入) { //wbvMngApp里的东西依赖于ngRoute路由
+                $routeProvider //用来定义路由规则
+                    .when('/',{template:'这是首页'})
+                    .when('/users',{template:'这是用户管理页'})
+                    .when('/asset',{template:'这是资产管理页'})
+                    .otherwise({redirectTo:'/'}); //如果是其他重定向到首页
+            }])*/
+    </script>  
+</body>
+</html>

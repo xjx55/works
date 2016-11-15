@@ -6,7 +6,27 @@
     <link rel="stylesheet" href="css/lianxi.css">
 </head>
 <body>
-    <p id="my">练习一下88</p>
-    <script src="js/lianxi.js"></script>
+    <div class="text-div">div1</div>
+    <div class="text-div1">div2</div>
+    <div class="text-div">div3</div>
+    <div class="text-div2">div4</div>
+    <div class="text-div">div5</div>
+    <div class="text-div3">div6</div>
+    <div class="text-div">div7</div>
+    <div class="text-div4">div8</div>
+    <div class="text-div">div9</div>
+    <div class="text-div5">div10</div>
+    <script>
+        var divs = document.getElementsByTagName('div');
+        /*for(var i=0;i<divs.length;i++) {  //DOM方法实现
+            console.log(divs[i].className);
+        };*/
+        
+        Array.prototype.forEach.call(divs,function(div) {  //forEach方法实现
+            console.log(div.className);
+        });
+
+       
+    </script>
 </body>
 </html>

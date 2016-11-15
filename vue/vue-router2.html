@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-router</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+
+        <div id="app">
+            <p>
+                <router-link to="/user/foo">/user/foo</router-link>
+                <router-link to="/user/bar">/user/bar</router-link>
+                <router-link to="/user/12">/user/12</router-link>
+                <router-link to="/test">/test/bar</router-link>
+            </p>
+            <router-view></router-view>
+        </div>
+
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script src="node_modules/vue-router/dist/vue-router.min.js"></script>  
+    <script>
+        var User = {
+            template:`<div>User {{ $route.params.id }}</div>`
+        }
+
+        var Test = {
+            template:'<h1>Test component</h1>'
+        }
+        
+        var router = new VueRouter({
+            routes: [
+                {path:'/user/:id',component:User},
+                {path:'/test',component:Test}
+            ]
+        });
+
+        var app = new Vue({router}).$mount('#app');
+    </script>  
+</body>
+</html>

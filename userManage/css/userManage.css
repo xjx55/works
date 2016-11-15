@@ -1,0 +1,26 @@
+.mt-20 {
+    margin-top: 20px;
+}
+
+.action {}
+
+.action {
+    width: 100px;
+    text-align: center;
+}
+
+
+/* 
+//////////////////////
+ */
+.mt-5 {
+   
+    margin-top: 5px;
+} 
+.search-wp {
+     width: 200px;
+} 
+.tool-bar-wp {
+    margin-bottom: 20px;
+    height: 40px;
+}

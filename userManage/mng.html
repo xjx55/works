@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>user manage</title>
+    <link href="js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/userManage.css">
+  </head>
+  <body  ng-app="mng" ng-controller="mngController">
+    
+    <div ng-include="'tlpmwbc/nav.html'"></div>
+
+    <div class="container">
+        <!-- 页面内容 -->
+        <div ng-view></div>
+        <!-- 页面内容 -->    
+    </div>
+
+    
+
+
+
+
+    <script src="js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="js/lib/underscore/underscore-min.js"></script>
+    <script src="js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/lib/angular/angular.min.js"></script>
+    <script src="js/lib/angular/angular-route.min.js"></script>
+    <script src="js/mng.js"></script>    
+  </body>
+</html>

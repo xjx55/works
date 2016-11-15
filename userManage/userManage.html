@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>user manage</title>
+    <link href="js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/userManage.css">
+  </head>
+  <body ng-app="userMng" ng-controller="userMngController">
+    <!-- nav -->
+    <div ng-include="'tlpmwbc/nav.html'"></div>
+    <!-- //// -->
+    <div class="container">
+      <div class="tool-bar-wp">
+        <ul class="nav nav-pills pull-left" role="tablist" >
+          <li role="presentation" class="active"><a href="javascript:;">用户列表</a></li>
+          <li role="presentation"><a ng-click="newUser()" href="javascript:;">新增用户</a></li>
+        </ul>
+
+        <div class="search-wp pull-right mt-5">
+          <div class="input-group">
+            <input type="text" ng-model="query" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+              <button ng-click="searchUser()" class="btn btn-default" type="button"> 搜索</button>
+            </span>
+          </div><!-- input-group -->
+        </div>
+        
+      </div>
+        <table class="table table-striped table-hover table-bordered mt-20">
+            <tr>
+                <th></th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>电话</th>
+                <th>住址</th>
+                <th>学历</th>
+                <th>爱好</th>
+                <th>照片</th>
+                <th  class="action">操作</th>
+            </tr>
+            <tr ng-repeat="user in users">
+                <td>{{$index+1}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.age}}</td>
+                <td>{{user.gender}}</td>
+                <td>{{user.mobile}}</td>
+                <td>{{user.address}}</td>
+                <td>{{user.edu}}</td>
+                <td>{{user.hobbies | fmtHobbies}}</td>
+                <td>{{user.user_img}}</td>
+                <td class="action">
+                    <button class="btn btn-warning btn-xs" ng-click="updataUser()">修改</button>
+                    <button class="btn btn-danger btn-xs" ng-click="delUser()">删除</button>
+                </td>
+            </tr>
+        </table>
+        <nav>
+          <ul class="pagination">
+            <li>
+             <a ng-click="firstPage()" href="javascript:;" aria-label="Previous">
+               <span aria-hidden="true">&laquo;</span>
+             </a>
+            </li> 
+            <li><a href="javascript:;" na-class="{true:'active'}[$index==page]" ng-click="clickPagingLi()" ng-repeat="tmpPage in pageArr">{{tmpPage + 1}}</a></li>
+            <!-- <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li> -->
+            <li>
+              <a ng-click="lastPage()" href="javascript:;" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li> 
+          </ul>
+        </nav>
+
+    </div>
+
+    <!-- 新增用户弹出框 -->
+<!-- Modal -->
+    <!-- <div ng-include="'tlpmwbc/didalog.html'"></div> -->
+    <div class="modal fade" id="userDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">{{userDlgTitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label for="" class="col-sm-2 control-label" >姓名：</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="" ng-model="user.name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">年龄：</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="" ng-model="user.age">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">姓名：</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" name="gender"  value="男" ng-model="user.gender"> 男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" value="女" ng-model="user.gender"> 女
+                        </label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">电话：</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="" ng-model="user.mobile">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">地址：</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="" ng-model="user.address">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">学历：</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" ng-model="user.edu">
+                            <option>专科</option>
+                            <option>本科</option>
+                            <option>硕士</option>
+                            <option>博士</option>
+                            <option>其他</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">爱好：</label>
+                    <div class="col-sm-9">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" ng-true-value="'篮球'" ng-false-value="" ng-model="user.hobbies.hb1"> 篮球
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" ng-true-value="'爬山'" ng-false-value="" ng-model="user.hobbies.hb2"> 爬山
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox"  ng-true-value="'音乐'" ng-false-value="" ng-model="user.hobbies.hb3"> 音乐
+                        </label>
+                    </div>
+                  </div>
+
+                </form>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" ng-click="saveBtn()" ng-show="!isUpdata">保存</button>
+                <button type="button" class="btn btn-primary" ng-click="doUpdataBtn()" ng-show="isUpdata">修改</button>
+            </div>
+            </div>
+        </div>
+    </div>
+   
+
+
+
+
+    <script src="js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="js/lib/underscore/underscore-min.js"></script>
+    <script src="js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/lib/angular/angular.min.js"></script>
+    <script src="js/userManage.js"></script>
+  </body>
+</html>

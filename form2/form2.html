@@ -12,7 +12,7 @@
     <hr>
     <form action="../api/reg_login_insert.php" method="post" onsubmit="return checkForm();"> <!-- form里有action属性才能决定表单提交到哪里，method是提交的方法。 -->
         <div>
-            <label>账号: <input id="users" type="text" name="username"></label>   
+            <label>账号: <input id="users" type="text" name="username" onkeyup="value=value.replace(/[^\w\.]/g,'')"></label>   
         </div> 
         <div>
             <label>密码: <input id="passw" type="password" name="password"></label>
@@ -94,7 +94,7 @@
             };*/
 
             if(!userslenRegExp.test(data.users)) {
-                alert('账号长度必须大于等于6，小于等于10并且账号必须是以字母开头的字母和数字的组合');
+                alert('账号必须是6到10位的并且账号必须是以字母开头的字母和数字的组合');
                 return false;
             };
 

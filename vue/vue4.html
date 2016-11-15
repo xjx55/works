@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue4</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        body {
+            background-color: pink;
+            font-style: '微软雅黑';
+            font-size: 20px;
+        }
+        .todo {
+            width: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 20px auto;
+            background-color: #fff;
+        }
+        ul,li {
+            list-style: none;
+        }
+        h1 {
+            text-align: center;
+        }
+        .todoIpt {
+            text-align: center;
+        }
+        .todoIpt input{
+            width: 380px;
+        }
+        .todo li {
+            border-bottom: 1px solid #ccc;
+            height: 50px;
+            margin: 0px 57px;
+            cursor: pointer;
+            line-height: 50px;
+
+        } 
+        .todo-list li:hover .del-btn {
+            display: block;
+        }
+        .del-btn {
+            float: right;
+            display: none;
+        }
+        .todo li:hover .del-btn {
+            display: block;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: red;
+            font-style: italic;
+        }
+        input {
+            line-height: 25px;
+            text-align: center;
+            border-radius: 3px;
+        }
+        .edit {
+            display: none;
+            height: 48px;
+            width: 380px;
+        }
+        .wp2 {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+        li.editing .edit {
+            display: block;
+        }
+        li.editing .wp {
+            display: none;
+        }
+        a.selected {
+            background-color: pink;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="todos" class="todo">
+        <h1>TODOS</h1>
+        <div class="todoIpt">
+            <input v-model="todoTxt" type="text" v-on:keyup.enter="saveTodo" placeholder="帮我记住。。。">
+        </div>
+        <ul class="todo-list">
+            <li v-for="todo in fTodos" v-bind:class="{editing:todo == editedTodo}">
+                <div class="wp">
+                    <input type="checkbox" v-model="todo.completed">
+                    <span v-on:dblclick="editTodo(todo)" v-bind:class="{completed:todo.completed}">{{todo.text}}</span>
+                    <span class="del-btn" v-on:click="removeTodo(todo)">&times;</span>
+                </div>
+                <input v-on:keyup.enter="doneEdit(todo)" v-on:blur="doneEdit(todo)" type="text" v-model="todo.text" class="edit">
+            </li> 
+        </ul>
+
+        <div class="wp2">
+            <span>还剩{{remaining}}项</span>
+            <a v-bind:class="{selected:visibility == 'all'}" href="#/all" class="">所有</a>
+            <a v-bind:class="{selected:visibility == 'active'}" href="#/active">未完成</a>
+            <a v-bind:class="{selected:visibility == 'completed'}" href="#/completed">已完成</a>
+        </div>
+    </div>
+
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        "use strict";
+
+        var STORAGE_KEY = 'wbc_vue';
+        var todoStorage = {
+            save:function(todos) {
+                localStorage.setItem(STORAGE_KEY,JSON.stringify(todos));
+            },
+            fetch:function() {
+               var todos = JSON.parse(localStorage.getItem(STORAGE_KEY || '[]'));//从本地取值，如果有值就把他取出来变成数组，没有就是空数组
+                return todos;
+            }
+        };
+
+        var maps = {
+            all:function(todos) {
+                return todos;
+            },
+            active:function(todos) {
+                return todos.filter(function(todo) {
+                    return !todo.completed;
+                });
+            },
+            completed:function(todos) {
+                return todos.filter(function(todo) {
+                    return todo.completed;
+                });
+            }
+        };
+
+        var app = new Vue({
+            el:'#todos',
+            data:{
+                todoTxt:'',
+                todos:todoStorage.fetch(),
+                editedTodo:null,
+                visibility:'all'
+            },
+            computed:{
+                remaining:function() {
+                    var tmpTodos = this.todos.filter(function(obj) { 
+                        return !obj.completed;  //过滤todos里没有选中的todo
+                    });
+                    return tmpTodos.length; //返回没有选中的todo的长度
+                },
+                fTodos:function() {
+                    return maps[this.visibility](this.todos);// 过滤不同状态的todos
+                }
+            },
+            watch:{
+                todos:{
+                    handler:function(todos) { //检测todos发生改变时调用save的方法，把新值存在本地
+                        todoStorage.save(todos);
+                    },
+                    deep:true  //深度观测，如果todos里的属性发生变化就改变
+                }
+                
+            },
+            methods:{
+                saveTodo:function() {
+                    this.todos.push({
+                        text:this.todoTxt,
+                        completed:false
+                    }); //如果方法被调用则把输入的值push到todos里
+                    
+                    this.todoTxt = '';//每次输入新值后文本框清空
+                },
+                removeTodo:function(todo) {
+                   //console.log(this.todo)
+                    this.todos.splice(this.todos.indexOf(todo),1)//得到要删除的那项
+                },
+                editTodo:function(todo) { //双击事件
+                    this.oldTxt = todo.text;
+                    this.editedTodo = todo;
+                },
+                doneEdit : function(todo) {  //没有焦点时做的事情
+                    this.editedTodo = null;   //让他等于null就enitedTodo就为false就没有了eniting的class样式
+                    todo.text = todo.text.trim();
+                    if(!todo.text) {
+                        this.removeTodo(todo);
+                    }
+                }
+            }
+        });
+
+        var onHashChange = function() {
+            var hash = location.hash.replace(/#\/?/,''); //把#替换成''
+            //location.href得到当前页的地址
+            if(maps[hash]) {
+                app.visibility = hash;
+            } else {
+                app.visibility ='all';
+                location.hash = '';
+            }
+        };
+        onHashChange();
+        window.onhashchange = onHashChange;
+    </script>
+    
+</body>
+</html>
+
+
+<!-- 1.元素得到vue的控制。
+2.给输入框绑定v-model事件和v-on:keyup.enter的保存事件，给li绑定v-for事件，得到todos里的每个todo渲染到页面。
+3.让数据缓存到本地缓存里，如果todos里面有值就取出来，没有就是一个空数组。
+4.watch观测todos，如果有新值就把新的todo存到本地里 
+5.添加删除的样式-->

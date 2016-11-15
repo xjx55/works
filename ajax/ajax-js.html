@@ -5,11 +5,26 @@
     <title>Document</title>
 </head>
 <body>
-    <button id="sendBtn">send</button>
 
+    <button id="sendBtn">send</button>
+    <div id="wp">
+        loading...
+    </div>
+    
+
+
+
+
+
+
+
+
+    <script src="../bower/js/lib/jquery/dist/jquery.min.js"></script>
     <script>
 
-        var sendBtn = document.getElementById('sendBtn');
+
+        //没有用jQuery方法
+       /* var sendBtn = document.getElementById('sendBtn');
 
         sendBtn.onclick = function() {
             getData();
@@ -32,8 +47,34 @@
                     
                 };
             };
-        };
+        };*/
 
+        //用jQuery方法
+        
+        !function(window,document,$,undefined) {
+            $('#sendBtn').on('click',function() {
+
+                var param = {
+                    username: 'abc',
+                    age: 20
+                };
+
+                $.get('../data/data.json', param,function(data) {
+                    $('#wp').html(renderLi(data));
+                });
+            });
+
+            function renderLi(resData) {
+                var lis = ['<select>'],
+                    name;
+                for(var i = 0; i < resData.length; i ++) {
+                    name = resData[i].name;
+                    lis.push('<option>',name,'</option>');
+                };
+                lis.push('</select>');
+                return lis.join('');
+            };
+        }(window,document,jQuery);
     </script>    
 </body>
 </html>

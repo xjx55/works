@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>angular</title>
+</head>
+<body>
+    
+
+    <!-- <div ng-app="myApp" ng-controller="myCtrl">
+    
+        名: <input type="text" ng-model="firstName"><br>
+        姓: <input type="text" ng-model="lastName"><br>
+        <br>
+        姓名: {{firstName + " " + lastName}}
+    
+    </div> -->
+    
+    <!-- 生成下拉菜单 -->
+    <!-- <div ng-app ng-init="opts=['北京','上海','天津','重庆']">
+        <select>
+            <option value="{{$index}}" ng-repeat="item in opts">
+                {{item}}
+            </option>
+        </select>
+    </div> -->
+
+<!-- 根据数组生成表格 -->
+<!-- <div ng-app ng-init="arrs = [
+            {
+                name: 'aaa',
+                age: 20,
+                gender: '男',
+                address: '北京市海淀区'
+            },
+            {
+                name: 'bbb',
+                age: 22,
+                gender: '男',
+                address: '北京市海淀区'
+            },
+            {
+                name: 'ccc',
+                age: 21,
+                gender: '男',
+                address: '北京市海淀区'
+            },
+            {
+                name: 'ddd',
+                age: 20,
+                gender: '男',
+                address: '北京市海淀区'
+            },
+            {
+                name: 'eee',
+                age: 25,
+                gender: '男',
+                address: '北京市海淀区'
+            },
+            {
+                name: 'fff',
+                age: 30,
+                gender: '男',
+                address: '北京市海淀区'
+            },
+            {
+                name: '郭德纲',
+                age: 40,
+                gender: '男',
+                address: '天津市红桥区'
+            }
+        ];">
+        <table  border="1">
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>地址</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="obj in arrs">
+                   <td>{{obj.name}}</td>
+                   <td>{{obj.age}}</td>
+                   <td>{{obj.gender}}</td>
+                   <td>{{obj.address}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>  -->
+    
+
+
+    <script src="js/lib/jquery/dist/jquery.min.js"></script>
+    <script src="js/lib/underscore/underscore-min.js"></script> 
+    <script src="js/lib/angular/angular.min.js"></script> 
+    <script>
+        /*var app = angular.module('myApp', []);
+            app.controller('myCtrl', function($scope) {
+                $scope.firstName= "John";
+                $scope.lastName= "Doe";
+        });*/
+        
+    </script>  
+</body>
+</html>

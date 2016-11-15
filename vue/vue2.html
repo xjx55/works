@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        div {
+            background-color: #ccc;
+        }
+        div.active {
+            background-color:red;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app11">
+        <div class="static" v-bind:class="{active:isActive, 'text-danger':danger}">abc</div>
+        <div v-bind:class="classObj">def</div>
+        <div v-bind:class="[myCls1,myCls2]">aaa</div>
+    </div>
+
+    <div id="app1">
+        <h1 v-if="ok">abc</h1>
+        <h1 v-else>def</h1>
+
+        <template v-if="ook">
+            <h1>h1</h1>
+            <h1>h2</h1>
+            <h1>h3</h1>
+        </template>
+
+        <hr>
+
+        <div v-if="Math.random() > 0.5">
+            sorry
+        </div>
+        <div v-else>
+            Not sorry
+        </div>
+    </div>
+
+    <hr>
+
+    <ul id="example-22">
+        <li v-for="(item,index) in items">
+            {{parentMessage}} - {{index}} - {{item.message}}
+        </li>
+    </ul>
+    
+    <hr>
+
+    <ul id="example-2">
+        <template v-for="item in items">
+            <li>{{item.message}}</li> 
+            <li class="divider"></li>  
+        </template>
+    </ul>
+
+    <hr>
+
+    <ul id="repeat-object">
+        <li v-for="(value,key,index) in object">
+            {{index}}.{{key}}:{{value}}
+        </li>
+    </ul>
+
+    <hr>
+
+    <div id="app2">
+        <ul>
+            <li v-for="n in evenNumbers">{{n}}</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <div id="app3">
+        <button v-on:click="greet">Greet</button>
+    </div>
+
+    <hr>
+
+    <div id="app4">
+        <button v-on:click="warn('Form cannot be submitted yet.',$event)">Submit</button>
+    </div>
+
+    <hr>
+
+    <div id="app5">
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label> 
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="jack">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="jack">Mike</label>
+        <br>
+        <span>Checked names:{{checkedNames}}</span>
+    </div>
+    <script src="node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var app5 = new Vue({
+            el:'#app5',
+            data:{
+                checkedNames:[]
+            }
+        });
+    ////////////////////////////////////
+        var app4 = new Vue({
+            el:'#app4',
+            methods:{
+                warn:function(message,event) {
+                    if(event)event.preventDefault()
+                    alert(message)
+                }
+            }
+        });
+    ////////////////////////////////
+        var app3 = new Vue({
+            el:'#app3',
+            data:{
+                name:'Vue.js'
+            },
+            methods:{
+                greet:function(event) {
+                    alert('Hello' + this.name + '!')
+                    alert(event.target.tagName)
+                }
+            }
+        });
+    /////////////////////////////
+        var app2 = new Vue({
+            el:'#app2',
+            data:{
+                nums:[1,2,3,5,8,6]
+            },
+            computed:{
+                evenNumbers:function(){
+                    return this.nums.filter(function(num) {
+                        return num % 2 === 0;
+                    })
+                }
+            }
+        });
+         //////////////////////
+        new Vue({
+            el:'#repeat-object',
+            data:{
+                object:{
+                    FirstName:'John',
+                    LastName:'Doe',
+                    Age:30
+                }
+            }
+        });
+
+        var example2 = new Vue({
+            el:'#example-2',
+            data:{
+                parentMessage:'Parent',
+                items:[
+                    {message:'Foo'},
+                    {message:'Bar'}
+                ]
+            }
+        });
+        var app = new Vue({
+            el:'#app1',
+            data:{
+                ok:true,
+                ook:true
+            }
+        });
+
+        var app = new Vue({
+            el:'#app11',
+            data:{
+                isActive:true,
+                danger:false,
+                classObj:{
+                    'red-bg':true,
+                    f24:true
+                },
+                myCls1:'cls1',
+                myCls2:'cls2'
+            }
+        });
+       
+    </script>    
+</body>
+</html>
